@@ -1,11 +1,599 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Test Food</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คู่มือสอบ กพร. ผู้ประกอบอาหารไทย + วีซ่าเยอรมัน</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sarabun',sans-serif;background:#0b1120;color:#e2e8f0;min-height:100vh}
+
+  /* HEADER */
+  .hero{background:linear-gradient(135deg,#0f2942 0%,#0a3d2e 100%);padding:28px 16px 22px;text-align:center;border-bottom:2px solid #1e3a5f}
+  .hero-flag{font-size:32px;margin-bottom:6px}
+  .hero-sub{font-size:12px;letter-spacing:3px;color:#94a3b8;text-transform:uppercase;margin-bottom:6px}
+  .hero-title{font-size:22px;font-weight:800;color:#f1f5f9;line-height:1.3}
+  .hero-desc{font-size:14px;color:#7dd3a8;margin-top:5px;font-weight:600}
+  .badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+  .badge{background:#0f172a;border-radius:20px;padding:4px 13px;font-size:12px;font-weight:600}
+  .badge-blue{border:1px solid #3b82f6;color:#93c5fd}
+  .badge-green{border:1px solid #10b981;color:#6ee7b7}
+  .badge-yellow{border:1px solid #f59e0b;color:#fcd34d}
+  .badge-red{border:1px solid #ef4444;color:#fca5a5}
+
+  /* NAV TABS */
+  .tabs{display:flex;overflow-x:auto;background:#111827;border-bottom:1px solid #1f2937;gap:0;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:none;padding:12px 18px;font-size:13px;font-weight:700;cursor:pointer;color:#64748b;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+  .tab.active{color:#7dd3a8;border-bottom-color:#10b981;background:#0b1120}
+  .tab:hover:not(.active){color:#94a3b8;background:#1f2937}
+
+  /* SECTIONS */
+  .section{display:none;padding:16px;max-width:760px;margin:0 auto}
+  .section.active{display:block}
+
+  /* CARDS */
+  .card{background:#1e293b;border:1px solid #334155;border-radius:12px;margin-bottom:14px;overflow:hidden}
+  .card-head{background:linear-gradient(90deg,#1e3a5f,#1e293b);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .card-title{font-weight:800;font-size:15px;color:#93c5fd}
+  .card-body{padding:14px 16px}
+
+  /* TIPS */
+  .tip-box{background:#052e16;border-left:4px solid #22c55e;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.7}
+  .tip-box strong{color:#6ee7b7}
+  .warn-box{background:#431407;border-left:4px solid #f97316;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.7}
+  .warn-box strong{color:#fed7aa}
+  .info-box{background:#0c1a3a;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.7}
+  .info-box strong{color:#93c5fd}
+
+  /* QUESTION */
+  .q-item{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #1e293b}
+  .q-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+  .q-text{font-weight:700;font-size:14px;color:#f1f5f9;margin-bottom:8px;line-height:1.5}
+  .choices{display:flex;flex-direction:column;gap:6px}
+  .choice{padding:7px 12px;border-radius:7px;font-size:13.5px;border:1px solid #334155;background:#0f172a;color:#cbd5e1;cursor:pointer;transition:all .2s;display:flex;gap:8px;align-items:flex-start}
+  .choice:hover{border-color:#475569;background:#1e293b}
+  .choice.correct{background:#052e16;border-color:#22c55e;color:#86efac}
+  .choice.wrong{background:#2d0a0a;border-color:#ef4444;color:#fca5a5}
+  .ans-label{color:#22c55e;font-size:12px;margin-top:6px;font-weight:700;background:#052e16;padding:4px 10px;border-radius:6px;display:inline-block}
+  .note-label{color:#fbbf24;font-size:12px;font-style:italic}
+
+  /* CHECKLIST */
+  .checklist{list-style:none}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #1e293b;font-size:14px;line-height:1.5}
+  .checklist li:last-child{border-bottom:none}
+  .check-icon{flex-shrink:0;font-size:16px;margin-top:1px}
+  .check-done{color:#22c55e}
+  .check-warn{color:#f59e0b}
+  .check-info{color:#3b82f6}
+  .step-num{background:#1e3a5f;color:#93c5fd;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+
+  /* COPY BTN */
+  .copy-bar{position:sticky;top:0;z-index:10;background:#111827;border-bottom:1px solid #1f2937;padding:10px 16px;display:flex;gap:10px;flex-wrap:wrap}
+  .btn{padding:8px 18px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Sarabun',sans-serif}
+  .btn-primary{background:#1d4ed8;color:#fff}
+  .btn-primary:hover{background:#1e40af}
+  .btn-primary.copied{background:#065f46;color:#6ee7b7}
+  .btn-outline{background:#1e293b;color:#94a3b8;border:1px solid #334155}
+  .btn-outline:hover{background:#334155;color:#f1f5f9}
+  .btn-green{background:#065f46;color:#6ee7b7}
+
+  /* TABLE */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  .tbl th{background:#1e3a5f;color:#93c5fd;padding:8px 12px;text-align:left;font-weight:700}
+  .tbl td{padding:8px 12px;border-bottom:1px solid #1e293b;vertical-align:top;line-height:1.5}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl tr:nth-child(even) td{background:#1a2540}
+
+  /* MEMORIZE CARD */
+  .mem-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .mem-card{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:10px 12px;font-size:13px}
+  .mem-card .label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .mem-card .val{color:#e2e8f0;font-weight:700;line-height:1.5}
+  @media(max-width:480px){.mem-grid{grid-template-columns:1fr}}
+
+  /* PROGRESS */
+  .progress-bar{background:#1e293b;border-radius:20px;height:8px;margin-top:8px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#10b981,#3b82f6);transition:width .5s}
+
+  footer{text-align:center;padding:20px;color:#475569;font-size:12px;border-top:1px solid #1e293b}
+</style>
 </head>
 <body>
-  <h1>Test Food ใช้งานได้แล้ว</h1>
-  <p>Hello GitHub Pages</p>
+
+<div class="hero">
+  <div class="hero-flag">🇹🇭🍳🇩🇪</div>
+  <div class="hero-sub">คู่มือเตรียมสอบ + เตรียมเอกสาร</div>
+  <div class="hero-title">มาตรฐานฝีมือแรงงาน ผู้ประกอบอาหารไทย</div>
+  <div class="hero-desc">เส้นทางสู่การทำงาน ณ ประเทศเยอรมนี 🌟</div>
+  <div class="badges">
+    <span class="badge badge-blue">📝 ภาคทฤษฎี 50 ข้อ</span>
+    <span class="badge badge-green">✅ ผ่าน 35 ข้อ (70%)</span>
+    <span class="badge badge-yellow">⏱️ 60 นาที</span>
+    <span class="badge badge-red">🇩🇪 วีซ่าพ่อครัว/แม่ครัว</span>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('tips')">💡 ทริคติวเข้ม</div>
+  <div class="tab" onclick="showTab('exam')">📝 แนวข้อสอบ</div>
+  <div class="tab" onclick="showTab('memory')">🧠 จำแม่น</div>
+  <div class="tab" onclick="showTab('docs')">📋 เอกสารวีซ่า</div>
+  <div class="tab" onclick="showTab('roadmap')">🗺️ โรดแมป</div>
+</div>
+
+<!-- ===================== SECTION: TIPS ===================== -->
+<div id="tab-tips" class="section active">
+  <div class="copy-bar">
+    <button class="btn btn-primary" id="copyTipsBtn" onclick="copySection('tips-content','copyTipsBtn')">📋 Copy ทริคทั้งหมด</button>
+  </div>
+  <div id="tips-content">
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🎯 เกณฑ์สอบ & ภาพรวม</span></div>
+    <div class="card-body">
+      <div class="info-box">
+        <strong>ภาคทฤษฎี:</strong> ปรนัย 4 ตัวเลือก จำนวน 50 ข้อ เวลา 60 นาที<br>
+        <strong>เกณฑ์ผ่าน:</strong> ต้องทำถูกอย่างน้อย <strong style="color:#22c55e">35 ข้อ</strong> (70%)<br>
+        <strong>ภาคปฏิบัติ:</strong> ปรุงอาหาร อาหารคาว 3 อย่าง + ของหวาน 1 อย่าง ใช้เวลา 3 ชั่วโมง<br>
+        <strong>ผ่านรวม:</strong> คะแนนรวมทั้ง 2 ภาค ≥ 70%
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ สำคัญ:</strong> ต้องผ่านภาคทฤษฎีก่อน ถึงจะมีสิทธิ์สอบภาคปฏิบัติ!
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🔥 หัวข้อที่ออกบ่อยที่สุด (เน้นจำ!)</span></div>
+    <div class="card-body">
+      <div class="tip-box">
+        <strong>1. Food Safety & อุณหภูมิ</strong> — ออกทุกครั้ง!<br>
+        • เชื้อโรคเจริญ: <strong>5-60°C</strong> (Danger Zone)<br>
+        • ตู้เย็นปกติ: <strong>0-4°C</strong> | ช่องแข็ง: <strong>-18°C</strong><br>
+        • อาหารปรุงสุกเก็บตู้เย็นได้: <strong>3-4 วัน</strong><br>
+        • ล้างมือนาน: <strong>20 วินาที</strong>
+      </div>
+      <div class="tip-box">
+        <strong>2. อันตรายในอาหาร 3 ประเภท</strong><br>
+        • <strong>ชีวภาพ</strong> = เชื้อแบคทีเรีย เชื้อรา<br>
+        • <strong>เคมี</strong> = ยาฆ่าแมลง สารเคมีตกค้าง<br>
+        • <strong>กายภาพ</strong> = กระดูก เศษแก้ว เส้นผม
+      </div>
+      <div class="tip-box">
+        <strong>3. การวัด ชั่ง ตวง</strong><br>
+        • 1 Cup = <strong>240 มล.</strong><br>
+        • 1 ช้อนโต๊ะ = <strong>3 ช้อนชา</strong> = <strong>15 มล.</strong><br>
+        • 1 ช้อนชา = <strong>5 มล.</strong><br>
+        • ตวงแป้ง: <strong>ตักใส่แล้วปาดเสมอ ห้ามกด!</strong>
+      </div>
+      <div class="tip-box">
+        <strong>4. วิตามินละลายในอะไร</strong><br>
+        • ละลายน้ำ = <strong>B, C</strong> (จำ "BC ใส่น้ำ")<br>
+        • ละลายไขมัน = <strong>A, D, E, K</strong> (จำ "ADEK ใส่น้ำมัน")
+      </div>
+      <div class="tip-box">
+        <strong>5. เครื่องแกงสำคัญ</strong><br>
+        • แกงเขียวหวาน = พริกขี้หนูสด + ตะไคร้ + ข่า + กระเทียม + ผิวมะกรูด<br>
+        • แกงแดง = พริกแห้ง + ตะไคร้ + กระเทียม<br>
+        • แกงมัสมั่น = ได้รับอิทธิพลอินเดีย-มุสลิม<br>
+        • ต้มยำ = ตะไคร้ + ข่า + ใบมะกรูด + พริก
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🔪 เทคนิคครัวที่ออกบ่อย</span></div>
+    <div class="card-body">
+      <div class="tip-box">
+        <strong>การหั่น (Knife Skills)</strong><br>
+        • Julienne = หั่นเป็น<strong>เส้นเล็กยาว</strong> คล้ายไม้ขีด<br>
+        • Brunoise = สับ<strong>เต๋าเล็กมาก</strong> (จาก Julienne)<br>
+        • Chiffonade = หั่นใบผัก<strong>เป็นเส้นบาง</strong><br>
+        • Dice = สับ<strong>เต๋า</strong> ขนาดต่างๆ
+      </div>
+      <div class="tip-box">
+        <strong>วิธีปรุง</strong><br>
+        • Blanching = ลวกน้ำเดือด → แช่น้ำเย็นทันที (ผักคงสีสวย)<br>
+        • Sauté = ผัดด้วยน้ำมันน้อย ไฟแรง<br>
+        • Braise = ต้มด้วยของเหลวน้อย ไฟอ่อนนาน<br>
+        • อุณหภูมิทอด: <strong>150-190°C</strong>
+      </div>
+      <div class="tip-box">
+        <strong>ทดสอบน้ำมันร้อน:</strong> จุ่มไม้จิ้มฟัน — ถ้ามีฟองรอบไม้ = พร้อมทอด
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🎓 ทริคสอบภาคปฏิบัติ</span></div>
+    <div class="card-body">
+      <div class="tip-box">
+        <strong>✅ ก่อนเข้าสอบ</strong><br>
+        • ซ้อมหั่นผัก: Julienne, เต๋า, สับ ให้คล่อง<br>
+        • ฝึกปรุงรสชาติ: เปรี้ยว หวาน เค็ม เผ็ด ให้สมดุล<br>
+        • จัดวางอาหารในจาน (Plating) ให้สวยงาม
+      </div>
+      <div class="tip-box">
+        <strong>✅ ในห้องสอบ</strong><br>
+        • บริหารเวลา 3 ชั่วโมงให้ดี วางแผนลำดับการปรุง<br>
+        • ทำความสะอาดระหว่างทำ — กรรมการดูความสะอาดด้วย!<br>
+        • แต่งกายสุภาพ หรือชุดเชฟ ผมมัด ไม่ใส่เครื่องประดับ
+      </div>
+      <div class="warn-box">
+        <strong>❌ ข้อห้าม:</strong> ห้ามสวมแหวน ห้ามเล็บยาว ห้ามชิมอาหารด้วยนิ้ว ห้ามใช้เขียงเดิมสลับดิบ-สุก
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /tips-content -->
+</div>
+
+<!-- ===================== SECTION: EXAM ===================== -->
+<div id="tab-exam" class="section">
+  <div class="copy-bar">
+    <button class="btn btn-primary" id="copyExamBtn" onclick="copyExam()">📋 Copy ข้อสอบ + เฉลย</button>
+    <button class="btn btn-outline" id="toggleAns" onclick="toggleAnswers()">👁️ แสดงเฉลย</button>
+  </div>
+  <div id="exam-content"></div>
+</div>
+
+<!-- ===================== SECTION: MEMORY ===================== -->
+<div id="tab-memory" class="section">
+  <div class="copy-bar">
+    <button class="btn btn-primary" id="copyMemBtn" onclick="copySection('memory-content','copyMemBtn')">📋 Copy สูตรจำ</button>
+  </div>
+  <div id="memory-content">
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🌡️ อุณหภูมิสำคัญ (จำให้ขึ้นใจ!)</span></div>
+    <div class="card-body">
+      <div class="mem-grid">
+        <div class="mem-card"><div class="label">Danger Zone</div><div class="val" style="color:#ef4444">5°C – 60°C<br>เชื้อโรคระบาด!</div></div>
+        <div class="mem-card"><div class="label">ตู้เย็นธรรมดา</div><div class="val" style="color:#3b82f6">0 – 4°C</div></div>
+        <div class="mem-card"><div class="label">ช่องแช่แข็ง</div><div class="val" style="color:#7dd3a8">-18°C</div></div>
+        <div class="mem-card"><div class="label">ทอดอาหาร</div><div class="val" style="color:#f59e0b">150 – 190°C</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">📏 การตวง (ท่องให้คล่อง)</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>หน่วย</th><th>เท่ากับ</th></tr>
+        <tr><td>1 ถ้วยตวง (Cup)</td><td>240 มล. / 16 ช้อนโต๊ะ</td></tr>
+        <tr><td>1 ช้อนโต๊ะ (Tbsp)</td><td>3 ช้อนชา / 15 มล.</td></tr>
+        <tr><td>1 ช้อนชา (tsp)</td><td>5 มล.</td></tr>
+        <tr><td>1 กิโลกรัม</td><td>1,000 กรัม</td></tr>
+        <tr><td>1 ลิตร</td><td>1,000 มล.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🌿 เครื่องแกง vs อาหาร (แมตช์ให้ถูก)</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>อาหาร</th><th>เครื่องสำคัญ</th></tr>
+        <tr><td>แกงเขียวหวาน</td><td>พริกขี้หนูสด ตะไคร้ ข่า ผิวมะกรูด</td></tr>
+        <tr><td>แกงแดง</td><td>พริกแห้ง ตะไคร้ กระเทียม หอม</td></tr>
+        <tr><td>แกงมัสมั่น</td><td>อิทธิพลอินเดีย-มุสลิม</td></tr>
+        <tr><td>ต้มยำกุ้ง</td><td>ตะไคร้ ข่า ใบมะกรูด พริกขี้หนู</td></tr>
+        <tr><td>ส้มตำ</td><td>มะละกอ<strong>ดิบ</strong> (ไม่ใช่สุก!)</td></tr>
+        <tr><td>ผัดไทย</td><td>เส้นจันท์/เส้นหมี่ขาว</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">💊 วิตามิน (สูตรจำ)</span></div>
+    <div class="card-body">
+      <div class="tip-box">
+        <strong>ละลายในน้ำ = B กับ C</strong><br>
+        จำว่า "น้ำ<u>BC</u>" — วิตามิน B1 B2 B6 B12 และวิตามิน C
+      </div>
+      <div class="tip-box">
+        <strong>ละลายในไขมัน = A D E K</strong><br>
+        จำว่า "<u>ADEK</u>" — ต้องกินกับอาหารที่มีไขมันด้วย
+      </div>
+      <div class="tip-box">
+        <strong>วิตามิน C สูง:</strong> ฝรั่ง > มะขามป้อม > ส้ม<br>
+        <strong>วิตามิน D:</strong> แสงแดด + ปลา + ไข่แดง
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🔑 คำศัพท์อังกฤษที่ออกบ่อย</span></div>
+    <div class="card-body">
+      <table class="tbl">
+        <tr><th>English</th><th>ความหมาย</th></tr>
+        <tr><td>Blanching</td><td>ลวกน้ำเดือดแล้วแช่น้ำเย็นทันที</td></tr>
+        <tr><td>Julienne</td><td>หั่นเป็นเส้นยาวคล้ายไม้ขีด</td></tr>
+        <tr><td>Sauté</td><td>ผัดด้วยน้ำมันน้อย ไฟแรง</td></tr>
+        <tr><td>Mise en place</td><td>เตรียมวัตถุดิบให้พร้อมก่อนปรุง</td></tr>
+        <tr><td>Cross Contamination</td><td>การปนเปื้อนข้ามอาหารดิบ-สุก</td></tr>
+        <tr><td>Food Safety</td><td>ความปลอดภัยด้านอาหาร</td></tr>
+        <tr><td>Steaming</td><td>การนึ่ง</td></tr>
+        <tr><td>Stir-frying (Fried Rice)</td><td>ข้าวผัด</td></tr>
+      </table>
+    </div>
+  </div>
+
+  </div><!-- /memory-content -->
+</div>
+
+<!-- ===================== SECTION: DOCS ===================== -->
+<div id="tab-docs" class="section">
+  <div class="copy-bar">
+    <button class="btn btn-primary" id="copyDocsBtn" onclick="copySection('docs-content','copyDocsBtn')">📋 Copy เช็คลิสต์เอกสาร</button>
+  </div>
+  <div id="docs-content">
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🏆 เอกสารสมัครสอบ กพร. (ภายในไทย)</span></div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li><span class="check-icon check-done">✅</span><div>ใบสมัครเข้ารับการทดสอบฝีมือแรงงาน <strong>แบบ กทร.201</strong></div></li>
+        <li><span class="check-icon check-done">✅</span><div>สำเนาบัตรประชาชน <strong>2 ชุด</strong></div></li>
+        <li><span class="check-icon check-done">✅</span><div>รูปถ่ายขนาด 1 นิ้ว <strong>2 รูป</strong> (ถ่ายไม่เกิน 6 เดือน)</div></li>
+        <li><span class="check-icon check-warn">⚠️</span><div>หลักฐานประสบการณ์ทำงาน <strong>อย่างน้อย 3 ปี</strong> หรือ ใบรับรองการอบรมอาหารไทย <strong>อย่างน้อย 90 ชั่วโมง</strong></div></li>
+        <li><span class="check-icon check-done">✅</span><div>อายุไม่ต่ำกว่า <strong>18 ปีบริบูรณ์</strong> ณ วันสมัคร</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🇩🇪 เอกสารวีซ่าทำงานพ่อครัว/แม่ครัว เยอรมัน</span></div>
+    <div class="card-body">
+      <div class="info-box">
+        <strong>ประเภทวีซ่า:</strong> National Visa (D Visa) — วีซ่าระยะยาวเพื่อการทำงาน<br>
+        <strong>อายุวีซ่า:</strong> สูงสุด <strong>4 ปี</strong> ต่ออายุได้
+      </div>
+      <ul class="checklist">
+        <li><span class="check-icon check-done">✅</span><div><strong>หนังสือเดินทาง (Passport)</strong> ที่ยังมีอายุใช้งาน + สำเนาหน้าข้อมูลส่วนตัว</div></li>
+        <li><span class="check-icon check-done">✅</span><div><strong>รูปถ่ายไบโอเมตริก</strong> 2 ใบ</div></li>
+        <li><span class="check-icon check-done">✅</span><div><strong>แบบฟอร์มคำร้องขอวีซ่า National Visa</strong> กรอกครบถ้วน + ลงนาม</div></li>
+        <li><span class="check-icon check-warn">⚠️</span><div><strong>สัญญาจ้างงานจากนายจ้างในเยอรมัน</strong> (ฉบับจริง) พร้อมคำแปลภาษาเยอรมัน</div></li>
+        <li><span class="check-icon check-warn">⚠️</span><div><strong>ใบรับรองมาตรฐานฝีมือแรงงาน กพร.</strong> (หลังผ่านการสอบ) พร้อมคำแปลภาษาเยอรมัน</div></li>
+        <li><span class="check-icon check-warn">⚠️</span><div><strong>ประวัติส่วนตัว (Resume)</strong> ภาษาอังกฤษหรือเยอรมัน</div></li>
+        <li><span class="check-icon check-done">✅</span><div><strong>หลักฐานประสบการณ์ทำงาน</strong> ใบผ่านงาน หรือหลักฐานการจ่ายประกันสังคมไทย</div></li>
+        <li><span class="check-icon check-info">ℹ️</span><div><strong>เมนูอาหารของร้านนายจ้าง</strong> (บางกรณี)</div></li>
+        <li><span class="check-icon check-info">ℹ️</span><div>คำแปลทะเบียนสมรส/ทะเบียนหย่า/ใบเปลี่ยนชื่อ (ถ้ามี)</div></li>
+      </ul>
+      <div class="warn-box" style="margin-top:12px">
+        <strong>⚠️ สำคัญมาก:</strong> เอกสารภาษาไทย ต้องแปลเป็นภาษาเยอรมันโดย<strong>นักแปลที่ได้รับการรับรอง</strong>เท่านั้น สถานทูตไม่รับการแปลทั่วไป
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🏛️ ขั้นตอนยื่นวีซ่า</span></div>
+    <div class="card-body">
+      <ul class="checklist">
+        <li><span class="step-num">1</span><div>ผ่านสอบ กพร. + รับใบรับรองมาตรฐานฝีมือแรงงาน</div></li>
+        <li><span class="step-num">2</span><div>หานายจ้าง/ร้านอาหารไทยในเยอรมัน และเซ็นสัญญาจ้างงาน</div></li>
+        <li><span class="step-num">3</span><div>นายจ้างส่งเอกสารสัญญาจ้างมาให้ฝั่งไทย</div></li>
+        <li><span class="step-num">4</span><div>แปลเอกสารทั้งหมดเป็นภาษาเยอรมัน (ใช้นักแปลรับรอง)</div></li>
+        <li><span class="step-num">5</span><div>นัดหมายยื่นวีซ่าที่ <strong>สถานทูตเยอรมัน กรุงเทพฯ</strong> หรือศูนย์ VFS Global</div></li>
+        <li><span class="step-num">6</span><div>รอผลพิจารณา ปกติ 4-12 สัปดาห์</div></li>
+        <li><span class="step-num">7</span><div>หลังวีซ่าผ่าน → ขึ้นทะเบียนแรงงานกับกรมแรงงานก่อนเดินทาง</div></li>
+      </ul>
+      <div class="info-box" style="margin-top:12px">
+        <strong>📍 ยื่นที่ไหน:</strong> สถานทูตเยอรมัน กรุงเทพฯ หรือ VFS Global อาคารจามจุรีย์สแควร์ ยูนิต 404 ชั้น 4 ถ.พญาไท (MRT สามย่าน)<br>
+        <strong>🌐 เว็บสถานทูต:</strong> bangkok.diplo.de
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /docs-content -->
+</div>
+
+<!-- ===================== SECTION: ROADMAP ===================== -->
+<div id="tab-roadmap" class="section">
+  <div class="copy-bar">
+    <button class="btn btn-primary" id="copyRoadBtn" onclick="copySection('road-content','copyRoadBtn')">📋 Copy โรดแมป</button>
+  </div>
+  <div id="road-content">
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">🗺️ โรดแมปทั้งหมด สู่เยอรมัน</span></div>
+    <div class="card-body">
+      <div class="info-box" style="margin-bottom:12px">
+        <strong>เป้าหมาย:</strong> พ่อครัว/แม่ครัวร้านอาหารไทยในเยอรมัน<br>
+        <strong>วีซ่าทำงาน:</strong> สูงสุด 4 ปี ต่ออายุได้
+      </div>
+      <ul class="checklist">
+        <li><span class="step-num">1</span><div>
+          <strong>เตรียมสมัครสอบ กพร.</strong><br>
+          <span style="color:#94a3b8;font-size:13px">— ติดต่อศูนย์ทดสอบใกล้บ้าน เช่น สวนดุสิต, ราชมงคล, สถาบันพัฒนาฝีมือแรงงานทั่วประเทศ</span>
+        </div></li>
+        <li><span class="step-num">2</span><div>
+          <strong>อ่านทฤษฎี + ฝึกปฏิบัติ</strong><br>
+          <span style="color:#94a3b8;font-size:13px">— เน้น Food Safety, วัตถุดิบ, เครื่องแกง, วัด-ชั่ง-ตวง</span>
+        </div></li>
+        <li><span class="step-num">3</span><div>
+          <strong>ผ่านสอบ → รับใบรับรองฝีมือแรงงาน</strong><br>
+          <span style="color:#94a3b8;font-size:13px">— ใบนี้คือเอกสารหลักที่เยอรมันต้องการ!</span>
+        </div></li>
+        <li><span class="step-num">4</span><div>
+          <strong>หานายจ้างในเยอรมัน</strong><br>
+          <span style="color:#94a3b8;font-size:13px">— ผ่าน Facebook Group, เพื่อนที่อยู่เยอรมัน, agency, หรือหาร้านอาหารไทยติดต่อตรง</span>
+        </div></li>
+        <li><span class="step-num">5</span><div>
+          <strong>รับสัญญาจ้าง + แปลเอกสาร</strong><br>
+          <span style="color:#94a3b8;font-size:13px">— ใช้นักแปลรับรองไทย-เยอรมัน</span>
+        </div></li>
+        <li><span class="step-num">6</span><div>
+          <strong>นัดสัมภาษณ์วีซ่าสถานทูตเยอรมัน</strong><br>
+          <span style="color:#94a3b8;font-size:13px">— นัดล่วงหน้า! คิวอาจรอนานหลายสัปดาห์</span>
+        </div></li>
+        <li><span class="step-num">7</span><div>
+          <strong>รับวีซ่า → ขึ้นทะเบียนแรงงาน → เดินทาง!</strong><br>
+          <span style="color:#22c55e;font-size:13px">🎉 พร้อมทำงานในเยอรมัน!</span>
+        </div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">💬 ทริปเพิ่มเติมที่ควรรู้</span></div>
+    <div class="card-body">
+      <div class="tip-box">
+        <strong>📚 เรียนภาษาเยอรมันเบื้องต้น</strong><br>
+        แม้แต่ A1 ก็ช่วยได้มาก ทั้งการสัมภาษณ์วีซ่าและการใช้ชีวิตในเยอรมัน แนะนำแอป Duolingo หรือ Babbel
+      </div>
+      <div class="tip-box">
+        <strong>💰 ค่าสอบ กพร.</strong><br>
+        ค่าสอบแตกต่างกันตามศูนย์ทดสอบ ประมาณ 500-1,500 บาท / สอบซ่อมภาคปฏิบัติคาว เมนูละ 300 บาท, ของหวาน 200 บาท
+      </div>
+      <div class="tip-box">
+        <strong>🔗 เว็บไซต์สำคัญ</strong><br>
+        • กพร.: <strong>dsd.go.th</strong><br>
+        • สถานทูตเยอรมัน: <strong>bangkok.diplo.de</strong><br>
+        • VFS Global วีซ่าเยอรมัน: <strong>visa.vfsglobal.com/tha/th/deu</strong>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ ข้อควรระวัง:</strong> วีซ่าพ่อครัว/แม่ครัวเยอรมันมีเงื่อนไขเฉพาะ แนะนำให้ตรวจสอบข้อมูลล่าสุดกับสถานทูตโดยตรง เพราะอาจมีการเปลี่ยนแปลงนโยบาย
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /road-content -->
+</div>
+
+<footer>
+  คู่มือเตรียมสอบ กพร. ผู้ประกอบอาหารไทย ระดับ 1 | เส้นทางสู่เยอรมัน 🇩🇪
+</footer>
+
+<script>
+// ---- TAB SWITCHING ----
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const idx = ['tips','exam','memory','docs','roadmap'].indexOf(name);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+}
+
+// ---- EXAM DATA ----
+const examData=[
+  {cat:"🛡️ ความปลอดภัยด้านอาหาร",qs:[
+    {q:"1. ความปลอดภัยทางอาหาร (Food Safety) หมายถึงอะไร?",c:["ก. การเลือกซื้ออาหารราคาถูก","ข. การจัดการให้อาหารไม่มีอันตรายทางชีวภาพ เคมี และกายภาพ","ค. การปรุงอาหารให้อร่อย","ง. การจัดเก็บอาหารในตู้เย็น"],a:"ข"},
+    {q:"2. อันตรายในอาหารมีกี่ประเภท?",c:["ก. 2 ประเภท","ข. 3 ประเภท","ค. 4 ประเภท","ง. 5 ประเภท"],a:"ข",n:"ชีวภาพ/เคมี/กายภาพ"},
+    {q:"3. อันตรายทางกายภาพในอาหาร หมายถึงอะไร?",c:["ก. เชื้อโรคในอาหาร","ข. สารเคมีตกค้างในผัก","ค. สิ่งแปลกปลอม เช่น กระดูก เศษแก้ว เส้นผม","ง. สารพิษจากเชื้อรา"],a:"ค"},
+    {q:"4. อุณหภูมิอันตราย (Danger Zone) ที่เชื้อโรคเจริญได้ดี?",c:["ก. 0–5°C","ข. 5–60°C","ค. 60–80°C","ง. 80–100°C"],a:"ข"},
+    {q:"5. การล้างมือที่ถูกต้องควรใช้เวลา?",c:["ก. 5 วินาที","ข. 10 วินาที","ค. 20 วินาที","ง. 30 วินาที"],a:"ค"},
+    {q:"6. ข้อใดถูกต้องด้านสุขอนามัยส่วนบุคคลในครัว?",c:["ก. สวมแหวนขณะปรุงอาหาร","ข. ใส่เล็บยาว","ค. ล้างมือก่อนและหลังสัมผัสอาหาร","ง. ชิมอาหารด้วยนิ้ว"],a:"ค"},
+  ]},
+  {cat:"🌿 วัตถุดิบและเครื่องปรุง",qs:[
+    {q:"7. ข้าวหอมมะลิมีถิ่นกำเนิดในภูมิภาคใด?",c:["ก. ภาคใต้","ข. ภาคเหนือ","ค. ภาคอีสาน","ง. ภาคตะวันออก"],a:"ค"},
+    {q:"8. เครื่องเทศหลักในแกงเขียวหวาน?",c:["ก. พริกแห้ง ขิง กระเทียม","ข. พริกขี้หนูสด ตะไคร้ ข่า ผิวมะกรูด","ค. พริกแห้ง อบเชย กานพลู","ง. ขมิ้น พริกไทย กระวาน"],a:"ข"},
+    {q:"9. น้ำปลาร้าเป็นเครื่องปรุงหลักของภาคใด?",c:["ก. ภาคกลาง","ข. ภาคเหนือ","ค. ภาคอีสาน","ง. ภาคใต้"],a:"ค"},
+    {q:"10. กะทิได้จากส่วนใดของมะพร้าว?",c:["ก. น้ำมะพร้าว","ข. เนื้อมะพร้าวบดและคั้น","ค. กาบมะพร้าว","ง. รากมะพร้าว"],a:"ข"},
+    {q:"11. แป้งมันสำปะหลังใช้ทำอะไรเป็นหลัก?",c:["ก. ขนมปัง","ข. บะหมี่","ค. ขนมไทย ของหวาน และทำซอสข้น","ง. ข้าวโพด"],a:"ค"},
+    {q:"12. ผลไม้ชนิดใดมีวิตามิน C สูงที่สุด?",c:["ก. กล้วย","ข. แตงโม","ค. ฝรั่ง","ง. มะม่วงดิบ"],a:"ค"},
+  ]},
+  {cat:"🔪 เทคนิคการประกอบอาหาร",qs:[
+    {q:"13. Julienne หมายถึงอะไร?",c:["ก. หั่นเป็นชิ้นหนา","ข. หั่นเป็นเส้นเล็กยาวคล้ายไม้ขีด","ค. หั่นเป็นแว่นกลม","ง. สับให้ละเอียด"],a:"ข"},
+    {q:"14. อุณหภูมิที่เหมาะสมในการทอดอาหาร?",c:["ก. 100–120°C","ข. 150–190°C","ค. 200–220°C","ง. 250°C ขึ้นไป"],a:"ข"},
+    {q:"15. การนึ่ง (Steaming) มีข้อดีอย่างไร?",c:["ก. อาหารกรอบ","ข. รักษาคุณค่าโภชนาการ ไม่ใช้น้ำมัน","ค. ใช้เวลาน้อยที่สุด","ง. ทำให้อาหารมีสีสวย"],a:"ข"},
+    {q:"16. Blanching คืออะไร?",c:["ก. การหมักเนื้อ","ข. ลวกในน้ำเดือดแล้วแช่น้ำเย็นทันที","ค. การย่างบนเตาถ่าน","ง. การนึ่งแรงดัน"],a:"ข"},
+    {q:"17. ทดสอบว่าน้ำมันร้อนพอสำหรับทอด?",c:["ก. ใส่น้ำดู","ข. ใส่ไม้จิ้มฟัน ถ้ามีฟองรอบไม้ = พร้อม","ค. ดูสีน้ำมัน","ง. วัดด้วยไม้บรรทัด"],a:"ข"},
+  ]},
+  {cat:"🍜 อาหารไทยและสูตรพื้นฐาน",qs:[
+    {q:"18. ต้มยำกุ้งใช้สมุนไพรใดเป็นหลัก?",c:["ก. ขมิ้น กระชาย ใบมะกรูด","ข. ตะไคร้ ข่า ใบมะกรูด พริกขี้หนู","ค. กระเทียม หอม พริกแห้ง","ง. โหระพา กะเพรา พริกไทย"],a:"ข"},
+    {q:"19. ผัดไทยใช้เส้นชนิดใด?",c:["ก. เส้นหมี่ขาว","ข. เส้นใหญ่","ค. บะหมี่","ง. เส้นจันท์"],a:"ง",n:"เส้นจันท์/เส้นหมี่ขาว"},
+    {q:"20. ส้มตำต้องใช้มะละกอชนิดใด?",c:["ก. มะละกอสุก","ข. มะละกอดิบ","ค. มะละกอแห้ง","ง. มะละกอกวน"],a:"ข"},
+    {q:"21. ข้าวสวยสุกที่ดีควรมีลักษณะอย่างไร?",c:["ก. แฉะ ติดกัน","ข. แห้ง แตก","ค. สุกทั่วถึง ร่วน ไม่แฉะ ไม่แข็ง","ง. มีสีเหลือง"],a:"ค"},
+    {q:"22. แกงมัสมั่นได้รับอิทธิพลจากวัฒนธรรมใด?",c:["ก. จีน","ข. อินเดีย-มุสลิม","ค. ยุโรป","ง. ญี่ปุ่น"],a:"ข"},
+  ]},
+  {cat:"📏 การวัด ชั่ง ตวง",qs:[
+    {q:"23. 1 ถ้วยตวง (Cup) มีปริมาตรเท่าใด?",c:["ก. 100 มล.","ข. 200 มล.","ค. 240 มล.","ง. 300 มล."],a:"ค"},
+    {q:"24. 1 ช้อนโต๊ะ เท่ากับกี่ช้อนชา?",c:["ก. 2","ข. 3","ค. 4","ง. 5"],a:"ข"},
+    {q:"25. ตวงแป้งที่ถูกต้องทำอย่างไร?",c:["ก. กดแป้งให้แน่น","ข. ตักใส่แล้วปาดเสมอ ไม่กด","ค. ตักพูนไม่ปาด","ง. ชั่งเสมอ"],a:"ข"},
+  ]},
+  {cat:"❄️ การเก็บรักษาอาหาร",qs:[
+    {q:"26. อุณหภูมิในตู้เย็น (ธรรมดา) ที่เหมาะสม?",c:["ก. 0–4°C","ข. 5–8°C","ค. 10–15°C","ง. -18°C"],a:"ก"},
+    {q:"27. อาหารปรุงสุกเก็บตู้เย็นได้นานเท่าใด?",c:["ก. 1 วัน","ข. 3–4 วัน","ค. 1 สัปดาห์","ง. 2 สัปดาห์"],a:"ข"},
+    {q:"28. ละลายเนื้อแช่แข็งวิธีไหนปลอดภัยที่สุด?",c:["ก. ทิ้งไว้บนเคาน์เตอร์","ข. แช่น้ำอุ่น","ค. ย้ายไปช่องธรรมดาล่วงหน้า","ง. ใช้ไดร์เป่า"],a:"ค"},
+  ]},
+  {cat:"🍽️ โภชนาการ",qs:[
+    {q:"29. อาหารหมู่ใดให้พลังงานสูงสุดต่อกรัม?",c:["ก. คาร์โบไฮเดรต","ข. โปรตีน","ค. ไขมัน","ง. วิตามิน"],a:"ค"},
+    {q:"30. วิตามินใดละลายในน้ำ?",c:["ก. A D E K","ข. B C","ค. A C","ง. D K"],a:"ข"},
+    {q:"31. อาหารประเภทใดเป็นแหล่งโปรตีนที่ดี?",c:["ก. ข้าว แป้ง น้ำตาล","ข. เนื้อสัตว์ ไข่ ถั่ว นม","ค. ผัก ผลไม้","ง. น้ำมัน เนย"],a:"ข"},
+  ]},
+  {cat:"🧹 สุขาภิบาลครัว",qs:[
+    {q:"32. เขียงเนื้อดิบควรแยกจาก?",c:["ก. เนื้อสัตว์ชนิดอื่น","ข. อาหารปรุงสุกและผักสด","ค. ของแห้ง","ง. ผลไม้สุก"],a:"ข",n:"หลีกเลี่ยง Cross Contamination"},
+    {q:"33. Cross Contamination หมายถึงอะไร?",c:["ก. ปรุงอาหารข้ามวัฒนธรรม","ข. การปนเปื้อนข้ามระหว่างอาหารดิบและสุก","ค. การผสมอาหารหลายชนิด","ง. การแบ่งปันอาหาร"],a:"ข"},
+    {q:"34. อุปกรณ์ครัวควรทำความสะอาดอย่างไร?",c:["ก. เช็ดผ้าแห้ง","ข. ล้างน้ำเปล่า","ค. ล้างน้ำ+สบู่ แล้วฆ่าเชื้อ","ง. แช่น้ำเย็น"],a:"ค"},
+    {q:"35. FIFO ในการจัดเก็บอาหารหมายถึงอะไร?",c:["ก. First In First Out — ของเก่าใช้ก่อน","ข. Fast In Fast Out","ค. First In Freeze Out","ง. ไม่มีในวิชาอาหาร"],a:"ก"},
+  ]},
+];
+
+// ---- RENDER EXAM ----
+let showAns = false;
+function renderExam(){
+  const container = document.getElementById('exam-content');
+  let html = '';
+  examData.forEach(sec=>{
+    html+=`<div class="card"><div class="card-head"><span class="card-title">${sec.cat}</span><span style="font-size:12px;color:#64748b;background:#0f172a;border-radius:12px;padding:2px 10px">${sec.qs.length} ข้อ</span></div><div class="card-body">`;
+    sec.qs.forEach(q=>{
+      html+=`<div class="q-item"><div class="q-text">${q.q}</div><div class="choices">`;
+      q.c.forEach((c,i)=>{
+        const letters=['ก','ข','ค','ง'];
+        const isC = letters[i]===q.a;
+        const cls = showAns?(isC?'correct':''):'';
+        html+=`<div class="choice ${cls}">${c}</div>`;
+      });
+      html+='</div>';
+      if(showAns) html+=`<div class="ans-label">✅ เฉลย: ตอบ ${q.a}${q.n?' <span class="note-label">— '+q.n+'</span>':''}</div>`;
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  container.innerHTML=html;
+}
+renderExam();
+
+function toggleAnswers(){
+  showAns=!showAns;
+  document.getElementById('toggleAns').textContent=showAns?'🙈 ซ่อนเฉลย':'👁️ แสดงเฉลย';
+  document.getElementById('toggleAns').style.background=showAns?'#7c3aed':'';
+  renderExam();
+}
+
+function copyExam(){
+  let text='📝 แนวข้อสอบมาตรฐานฝีมือแรงงาน ผู้ประกอบอาหารไทย ระดับ 1\n\n';
+  examData.forEach(sec=>{
+    text+=sec.cat+'\n'+'─'.repeat(40)+'\n';
+    sec.qs.forEach(q=>{
+      text+=q.q+'\n';
+      q.c.forEach(c=>text+='  '+c+'\n');
+      text+='  ✅ เฉลย: '+q.a+(q.n?' ('+q.n+')\n':'\n')+'\n';
+    });
+    text+='\n';
+  });
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('copyExamBtn');
+    btn.textContent='✅ คัดลอกแล้ว!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='📋 Copy ข้อสอบ + เฉลย';btn.classList.remove('copied')},2200);
+  });
+}
+
+function copySection(id, btnId){
+  const el=document.getElementById(id);
+  const text=el.innerText||el.textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById(btnId);
+    const orig=btn.textContent;
+    btn.textContent='✅ คัดลอกแล้ว!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied')},2200);
+  });
+}
+</script>
 </body>
 </html>
